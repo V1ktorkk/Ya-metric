@@ -26,11 +26,11 @@ interface VariantStats {
 }
 
 interface Stats {
-  variant1: VariantStats
-  variant2: VariantStats
+  'big-form': VariantStats
+  'small-form': VariantStats
 }
 
-type Variant = 'variant1' | 'variant2'
+type Variant = 'big-form' | 'small-form'
 
 const CONTACT_METHODS = [
   { id: 'telegram', label: 'Telegram', icon: '✈️' },
@@ -50,18 +50,18 @@ export function ResumeContact() {
   const { trackEvent } = useYandexMetrika()
 
   const { flags, ready, experiments } = useExperimentsContext()
-  console.log('flags', flags)
+  console.log('flags', flags[0])
   console.log('ready', ready)
   console.log('exp', experiments)
 
-  const variant: Variant | null = ready
-    ? flags['test-clicks']?.[0] === 'variant2'
-      ? 'variant2'
-      : 'variant1'
-    : null
+  const formType = flags['form_type']?.[0] as Variant | undefined
+
+  const variant: Variant = ready && formType ? formType : 'big-form'
+
+  console.log('var', variant)
 
   const [stats, setStats] = useState<Stats>({
-    variant1: {
+    'big-form': {
       submissions: 0,
       fieldFills: {
         name: 0,
@@ -72,7 +72,7 @@ export function ResumeContact() {
         message: 0,
       },
     },
-    variant2: {
+    'small-form': {
       submissions: 0,
       fieldFills: { email: 0, message: 0 },
     },
@@ -132,7 +132,7 @@ export function ResumeContact() {
     }
 
     const isValid =
-      variant === 'variant1'
+      variant === 'big-form'
         ? formData.name.trim() &&
           formData.email.trim() &&
           formData.company.trim() &&
@@ -155,7 +155,7 @@ export function ResumeContact() {
         },
       }))
 
-      if (variant === 'variant1') {
+      if (variant === 'big-form') {
         trackEvent(
           `form_${variant}`,
           'submit',
@@ -182,7 +182,6 @@ export function ResumeContact() {
     }
   }
 
-  // ✅ Показываем загрузку, пока не готовы флаги
   if (!ready) {
     return (
       <section id="contact" className="mx-auto max-w-6xl border-t border-slate-700 px-4 py-16">
@@ -193,7 +192,7 @@ export function ResumeContact() {
     )
   }
 
-  if (variant === 'variant1') {
+  if (variant === 'big-form') {
     return (
       <section id="contact" className="mx-auto max-w-6xl border-t border-slate-700 px-4 py-16">
         <div className="form-enter animate-fadeIn mx-auto max-w-3xl rounded-lg border border-slate-700 bg-slate-800/80 p-8">
