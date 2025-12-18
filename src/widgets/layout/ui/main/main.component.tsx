@@ -6,7 +6,7 @@ export function Main(props: MainProps) {
   const { className, children, ...otherProps } = props
 
   return (
-    <main className={clsx('', className)} {...otherProps}>
+    <main className={clsx('bg-black', className)} {...otherProps}>
       {children}
     </main>
   )
