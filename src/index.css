@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+@theme {
+  --grid-template-rows-layout: auto 1fr auto;
+}
+
+html {
+  font-size: 1vw;
+}

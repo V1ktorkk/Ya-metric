@@ -1,0 +1,56 @@
+version: "3.9"
+x-logging: &logging
+  logging:
+    driver: loki
+    options:
+      loki-url: "https://${LOKI_USR}:${LOKI_PSW}@loki.unistory.app/loki/api/v1/push"
+      loki-external-labels: "type=prod,repo=${COMPOSE_PROJECT_NAME},job=docker,container_name={{.Name}}"
+
+services:
+  frontend:
+    <<: *logging
+    image: ${REGISTRY_HOST_REMOTE}/${GIT_REPO_NAME}.${BRANCH_NAME}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.redirect-www.redirectregex.regex=^https?://www\\.(.+)"
+      - "traefik.http.middlewares.redirect-www.redirectregex.replacement=https://$${1}"
+      - "traefik.http.middlewares.www-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.middlewares=www-redirect@docker"
+      - "traefik.http.routers.frontend.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.tls.certresolver=le"
+      - "traefik.http.routers.frontend.tls=true"
+    networks:
+      - default
+
+  traefik:
+    <<: *logging
+    image: traefik:2.7
+    restart: unless-stopped
+    command:
+      - "--api.insecure=false"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+      - "--certificatesresolvers.le.acme.httpChallenge.entrypoint=web"
+      - "--certificatesresolvers.le.acme.email=${CLIENT_EMAIL}"
+      - "--certificatesresolvers.le.acme.storage=/le/acme.json"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=WARN"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=${COMPOSE_PROJECT_NAME}"
+      - "--providers.docker=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1::8080"
+    volumes:
+      - "/home/jenkins/le:/le"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - default
+
+networks:
+  default:
+    name: ${COMPOSE_PROJECT_NAME}
