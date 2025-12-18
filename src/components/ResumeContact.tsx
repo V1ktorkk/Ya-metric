@@ -156,11 +156,7 @@ export function ResumeContact() {
         trackEvent(`form_${variant}`, 'submit', `email: ${formData.email}`)
       }
 
-      alert(
-        `✅ Спасибо! Ваше сообщение отправлено.\n\n` +
-          `Вариант: ${variant === 'variant1' ? 'Минималистичный' : 'Информативный'}\n` +
-          `Всего отправок: ${newSubmissionCount}`,
-      )
+      alert(`✅ Спасибо! Ваше сообщение отправлено.\n\n`)
 
       setFormData({ name: '', email: '', message: '' })
       setFilledFields(new Set())
