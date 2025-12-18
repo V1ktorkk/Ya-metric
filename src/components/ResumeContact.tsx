@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useYandexMetrika } from '../hooks/useYandexMetrika'
 
 interface FormData {
@@ -74,7 +74,12 @@ export function ResumeContact() {
 
   const [filledFields, setFilledFields] = useState<Set<string>>(new Set())
 
+  const hasInitialized = useRef(false)
+
   useEffect(() => {
+    if (hasInitialized.current) return
+    hasInitialized.current = true
+
     const initializeVariant = async () => {
       try {
         setIsLoading(true)
@@ -89,7 +94,6 @@ export function ResumeContact() {
           while (attempt < maxAttempts && !variantId) {
             if ((window as any)._ymab_params) {
               variantId = (window as any)._ymab_params
-              console.log(`✅ Вариант получен после ${attempt * 100}мс`)
               break
             }
             await new Promise((resolve) => setTimeout(resolve, 100))
@@ -98,9 +102,8 @@ export function ResumeContact() {
         }
 
         if (!variantId) {
-          console.warn('⚠️ Вариокуб не инициализирован, используется резервный вариант')
-          const fallbackVariant = Math.random() > 0.5 ? 'variant1' : 'variant2'
-          setVariant(fallbackVariant)
+          console.warn('⚠️ Вариокуб не инициализирован')
+          setVariant(Math.random() > 0.5 ? 'variant1' : 'variant2')
           setIsLoading(false)
           return
         }
@@ -110,18 +113,17 @@ export function ResumeContact() {
 
         setVariant(assignedVariant)
         trackEvent(`form_${assignedVariant}`, 'variant_shown', assignedVariant)
-        console.log(`👤 Вариант показан: ${assignedVariant} (ID: ${variantId})`)
+        console.log(`👤 Вариант: ${assignedVariant}`)
       } catch (err) {
-        console.error('❌ Error инициализации:', err)
-        const fallbackVariant = Math.random() > 0.5 ? 'variant1' : 'variant2'
-        setVariant(fallbackVariant)
+        console.error('❌ Error:', err)
+        setVariant(Math.random() > 0.5 ? 'variant1' : 'variant2')
       } finally {
         setIsLoading(false)
       }
     }
 
     initializeVariant()
-  }, [trackEvent])
+  }, [])
 
   const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
