@@ -49,12 +49,10 @@ const CONTACT_PLACEHOLDERS = {
 export function ResumeContact() {
   const { trackEvent } = useYandexMetrika()
 
-  // ✅ Используем официальный hook от yandex-metrica-ab-react
   const { flags, ready } = useExperimentsContext()
 
-  // ✅ Определяем вариант на основе флагов
   const variant: Variant | null = ready
-    ? flags['resume_contact_form']?.[0] === 'variant2'
+    ? flags['test-clicks']?.[0] === 'variant2'
       ? 'variant2'
       : 'variant1'
     : null
