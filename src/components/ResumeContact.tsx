@@ -49,7 +49,10 @@ const CONTACT_PLACEHOLDERS = {
 export function ResumeContact() {
   const { trackEvent } = useYandexMetrika()
 
-  const { flags, ready } = useExperimentsContext()
+  const { flags, ready, experiments } = useExperimentsContext()
+  console.log('flags', flags)
+  console.log('ready', ready)
+  console.log('exp', experiments)
 
   const variant: Variant | null = ready
     ? flags['test-clicks']?.[0] === 'variant2'
