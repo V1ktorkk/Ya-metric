@@ -184,9 +184,12 @@ export function ResumeContact() {
 
   if (!ready) {
     return (
-      <section id="contact" className="mx-auto max-w-6xl border-t border-slate-700 px-4 py-16">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-slate-400">⏳ Загрузка формы...</p>
+      <section
+        id="contact"
+        className="min-h-screen w-full border-t border-slate-700 px-3 py-8 sm:px-4 sm:py-12 md:py-16 lg:py-20"
+      >
+        <div className="mx-auto max-w-full">
+          <p className="text-center text-sm text-slate-400 sm:text-base">⏳ Загрузка формы...</p>
         </div>
       </section>
     )
@@ -194,17 +197,22 @@ export function ResumeContact() {
 
   if (variant === 'big-form') {
     return (
-      <section id="contact" className="mx-auto max-w-6xl border-t border-slate-700 px-4 py-16">
-        <div className="form-enter animate-fadeIn mx-auto max-w-3xl rounded-lg border border-slate-700 bg-slate-800/80 p-8">
-          <h3 className="mb-2 text-3xl font-bold text-white">Начнём сотрудничество</h3>
-          <p className="mb-8 text-slate-400">
+      <section
+        id="contact"
+        className="min-h-screen w-full border-t border-slate-700 px-3 py-6 sm:px-4 sm:py-10 md:px-6 md:py-16 lg:py-20"
+      >
+        <div className="form-enter animate-fadeIn mx-auto w-full max-w-2xl rounded-lg border border-slate-700 bg-slate-800/80 p-4 sm:p-6 md:p-8">
+          <h3 className="mb-1 text-xl font-bold text-white sm:text-2xl md:text-3xl">Начнём сотрудничество</h3>
+          <p className="mb-6 text-xs text-slate-400 sm:text-sm md:mb-8">
             Расскажите о себе и своем проекте. Я ответу в течение 24 часов
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
             {/* Name */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">👤 Ваше имя</label>
+              <label className="mb-1.5 block text-xs font-medium text-slate-300 sm:text-sm">
+                👤 Ваше имя
+              </label>
               <input
                 type="text"
                 name="name"
@@ -212,13 +220,13 @@ export function ResumeContact() {
                 value={formData.name}
                 onChange={handleFieldChange}
                 onBlur={() => handleFieldBlur('name')}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">📧 Email</label>
+              <label className="mb-1.5 block text-xs font-medium text-slate-300 sm:text-sm">📧 Email</label>
               <input
                 type="email"
                 name="email"
@@ -226,13 +234,15 @@ export function ResumeContact() {
                 value={formData.email}
                 onChange={handleFieldChange}
                 onBlur={() => handleFieldBlur('email')}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
               />
             </div>
 
             {/* Company */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">🏢 Компания/Проект</label>
+              <label className="mb-1.5 block text-xs font-medium text-slate-300 sm:text-sm">
+                🏢 Компания/Проект
+              </label>
               <input
                 type="text"
                 name="company"
@@ -240,27 +250,30 @@ export function ResumeContact() {
                 value={formData.company}
                 onChange={handleFieldChange}
                 onBlur={() => handleFieldBlur('company')}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
               />
             </div>
 
             {/* Contact Method Tabs */}
             <div>
-              <label className="mb-3 block text-sm font-medium text-slate-300">💬 Способ связи</label>
-              <div className="mb-4 flex flex-wrap gap-2">
+              <label className="mb-2 block text-xs font-medium text-slate-300 sm:mb-3 sm:text-sm">
+                💬 Способ связи
+              </label>
+              <div className="mb-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-2 md:mb-4">
                 {CONTACT_METHODS.map((method) => (
                   <button
                     key={method.id}
                     type="button"
                     onClick={() => setFormData((prev) => ({ ...prev, contactMethod: method.id }))}
-                    className={`transform rounded-lg px-4 py-2 transition ${
+                    className={`transform rounded-lg px-2.5 py-1.5 text-xs transition sm:px-3 sm:py-2 sm:text-sm ${
                       formData.contactMethod === method.id
                         ? 'border-teal-400 bg-teal-500/20 text-teal-300'
                         : 'border border-slate-600 bg-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-600'
                     }`}
                   >
-                    <span className="mr-2">{method.icon}</span>
-                    {method.label}
+                    <span className="mr-1 inline-block sm:mr-2">{method.icon}</span>
+                    <span className="hidden sm:inline">{method.label}</span>
+                    <span className="inline sm:hidden">{method.label.slice(0, 4)}</span>
                   </button>
                 ))}
               </div>
@@ -273,29 +286,29 @@ export function ResumeContact() {
                 value={formData.contactHandle}
                 onChange={handleFieldChange}
                 onBlur={() => handleFieldBlur('contactHandle')}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
               />
             </div>
 
             {/* Message */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-1.5 block text-xs font-medium text-slate-300 sm:text-sm">
                 📝 Расскажите о вашей идее
               </label>
               <textarea
                 name="message"
                 placeholder="Что вас интересует? Какие задачи нужно решить?..."
-                rows={6}
+                rows={4}
                 value={formData.message}
                 onChange={handleFieldChange}
                 onBlur={() => handleFieldBlur('message')}
-                className="w-full resize-none rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none"
+                className="md:rows-6 w-full resize-none rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full transform rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 px-6 py-3 font-semibold text-white transition hover:scale-105 active:scale-95"
+              className="w-full transform rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:scale-105 active:scale-95 sm:py-3 sm:text-base md:px-6 md:py-3"
             >
               Отправить
             </button>
@@ -306,14 +319,19 @@ export function ResumeContact() {
   }
 
   return (
-    <section id="contact" className="mx-auto max-w-6xl border-t border-slate-700 px-4 py-16">
-      <div className="form-enter animate-fadeIn mx-auto max-w-2xl rounded-lg border border-blue-500/50 bg-gradient-to-br from-blue-900/40 to-purple-900/40 p-8">
-        <h3 className="mb-2 text-2xl font-bold text-white">Свяжитесь со мной</h3>
-        <p className="mb-6 text-slate-300">Поделитесь своей идеей, и я свяжусь с вами в течение 24 часов</p>
+    <section
+      id="contact"
+      className="min-h-screen w-full border-t border-slate-700 px-3 py-6 sm:px-4 sm:py-10 md:px-6 md:py-16 lg:py-20"
+    >
+      <div className="form-enter animate-fadeIn mx-auto w-full max-w-2xl rounded-lg border border-blue-500/50 bg-gradient-to-br from-blue-900/40 to-purple-900/40 p-4 sm:p-6 md:p-8">
+        <h3 className="mb-1 text-xl font-bold text-white sm:text-2xl md:text-3xl">Свяжитесь со мной</h3>
+        <p className="mb-5 text-xs text-slate-300 sm:mb-6 sm:text-sm md:mb-8">
+          Поделитесь своей идеей, и я свяжусь с вами в течение 24 часов
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">📧 Email</label>
+            <label className="mb-1.5 block text-xs font-medium text-slate-300 sm:text-sm">📧 Email</label>
             <input
               type="email"
               name="email"
@@ -321,28 +339,28 @@ export function ResumeContact() {
               value={formData.email}
               onChange={handleFieldChange}
               onBlur={() => handleFieldBlur('email')}
-              className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2 text-white placeholder-slate-500 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none"
+              className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-1.5 block text-xs font-medium text-slate-300 sm:text-sm">
               💬 О чем вы хотите поговорить?
             </label>
             <textarea
               name="message"
               placeholder="Например: Фриланс проект, Job offer, сотрудничество..."
-              rows={5}
+              rows={4}
               value={formData.message}
               onChange={handleFieldChange}
               onBlur={() => handleFieldBlur('message')}
-              className="w-full resize-none rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2 text-white placeholder-slate-500 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none"
+              className="md:rows-5 w-full resize-none rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full transform rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-3 font-semibold text-white transition hover:scale-105 active:scale-95"
+            className="w-full transform rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:scale-105 active:scale-95 sm:py-3 sm:text-base md:px-6 md:py-3"
           >
             Отправить
           </button>
