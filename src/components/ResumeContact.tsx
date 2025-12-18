@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { useYandexMetrika } from '../hooks/useYandexMetrika'
 
@@ -82,8 +83,18 @@ export function ResumeContact() {
         let variantId = params.get('_ymab_params')
 
         if (!variantId) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          variantId = (window as any)._ymab_params
+          const maxAttempts = 20
+          let attempt = 0
+
+          while (attempt < maxAttempts && !variantId) {
+            if ((window as any)._ymab_params) {
+              variantId = (window as any)._ymab_params
+              console.log(`✅ Вариант получен после ${attempt * 100}мс`)
+              break
+            }
+            await new Promise((resolve) => setTimeout(resolve, 100))
+            attempt++
+          }
         }
 
         if (!variantId) {
@@ -98,7 +109,6 @@ export function ResumeContact() {
         const assignedVariant = variantNumber % 2 === 0 ? 'variant1' : 'variant2'
 
         setVariant(assignedVariant)
-
         trackEvent(`form_${assignedVariant}`, 'variant_shown', assignedVariant)
         console.log(`👤 Вариант показан: ${assignedVariant} (ID: ${variantId})`)
       } catch (err) {
@@ -110,9 +120,8 @@ export function ResumeContact() {
       }
     }
 
-    const timer = setTimeout(initializeVariant, 150)
-    return () => clearTimeout(timer)
-  }, [])
+    initializeVariant()
+  }, [trackEvent])
 
   const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
