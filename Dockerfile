@@ -2,11 +2,11 @@ FROM --platform=amd64 node:16-alpine as builder
 
 WORKDIR /app
 
-ARG build_env
+ARG BUILD_ENV=production
 
 COPY ./ .
 RUN npm ci \
-  && npm run build:$build_env
+  && npm run build:${BUILD_ENV}
 
 FROM --platform=amd64 node:16-alpine
 
@@ -18,4 +18,5 @@ COPY ./ .
 RUN npm ci --omit=dev
 
 EXPOSE 3000
+
 CMD npm run serve

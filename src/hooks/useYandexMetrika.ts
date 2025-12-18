@@ -18,7 +18,7 @@ export function useYandexMetrika() {
       return
     }
 
-    const counterId = 98765432
+    const counterId = 105915496
 
     ;(window as any).ym(counterId, 'reachGoal', `${category}_${action}`, {
       label: label || '',
@@ -34,7 +34,6 @@ export function useYandexMetrika() {
    * @returns ID варианта из URL параметра или глобального объекта
    */
   const getVariantFromVarioqub = (): string | null => {
-    // Вариокуб добавляет параметр _ymab_params в URL
     const params = new URLSearchParams(window.location.search)
     const variantParam = params.get('_ymab_params')
 
