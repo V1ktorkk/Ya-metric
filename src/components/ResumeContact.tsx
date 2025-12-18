@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { useExperimentsContext } from 'yandex-metrica-ab-react'
 import { useYandexMetrika } from '../hooks/useYandexMetrika'
 
 interface FormData {
@@ -49,13 +49,27 @@ const CONTACT_PLACEHOLDERS = {
 export function ResumeContact() {
   const { trackEvent } = useYandexMetrika()
 
-  const [variant, setVariant] = useState<Variant | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  // ✅ Используем официальный hook от yandex-metrica-ab-react
+  const { flags, ready } = useExperimentsContext()
+
+  // ✅ Определяем вариант на основе флагов
+  const variant: Variant | null = ready
+    ? flags['resume_contact_form']?.[0] === 'variant2'
+      ? 'variant2'
+      : 'variant1'
+    : null
 
   const [stats, setStats] = useState<Stats>({
     variant1: {
       submissions: 0,
-      fieldFills: { name: 0, email: 0, company: 0, contactMethod: 0, contactHandle: 0, message: 0 },
+      fieldFills: {
+        name: 0,
+        email: 0,
+        company: 0,
+        contactMethod: 0,
+        contactHandle: 0,
+        message: 0,
+      },
     },
     variant2: {
       submissions: 0,
@@ -73,57 +87,6 @@ export function ResumeContact() {
   })
 
   const [filledFields, setFilledFields] = useState<Set<string>>(new Set())
-
-  const hasInitialized = useRef(false)
-
-  useEffect(() => {
-    if (hasInitialized.current) return
-    hasInitialized.current = true
-
-    const initializeVariant = async () => {
-      try {
-        setIsLoading(true)
-
-        const params = new URLSearchParams(window.location.search)
-        let variantId = params.get('_ymab_params')
-
-        if (!variantId) {
-          const maxAttempts = 20
-          let attempt = 0
-
-          while (attempt < maxAttempts && !variantId) {
-            if ((window as any)._ymab_params) {
-              variantId = (window as any)._ymab_params
-              break
-            }
-            await new Promise((resolve) => setTimeout(resolve, 100))
-            attempt++
-          }
-        }
-
-        if (!variantId) {
-          console.warn('⚠️ Вариокуб не инициализирован')
-          setVariant(Math.random() > 0.5 ? 'variant1' : 'variant2')
-          setIsLoading(false)
-          return
-        }
-
-        const variantNumber = parseInt(variantId as string) || variantId.charCodeAt(0)
-        const assignedVariant = variantNumber % 2 === 0 ? 'variant1' : 'variant2'
-
-        setVariant(assignedVariant)
-        trackEvent(`form_${assignedVariant}`, 'variant_shown', assignedVariant)
-        console.log(`👤 Вариант: ${assignedVariant}`)
-      } catch (err) {
-        console.error('❌ Error:', err)
-        setVariant(Math.random() > 0.5 ? 'variant1' : 'variant2')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    initializeVariant()
-  }, [])
 
   const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -218,7 +181,8 @@ export function ResumeContact() {
     }
   }
 
-  if (isLoading) {
+  // ✅ Показываем загрузку, пока не готовы флаги
+  if (!ready) {
     return (
       <section id="contact" className="mx-auto max-w-6xl border-t border-slate-700 px-4 py-16">
         <div className="mx-auto max-w-2xl text-center">
