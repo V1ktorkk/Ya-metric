@@ -55,9 +55,7 @@ export function ResumeContact() {
   console.log('exp', experiments)
 
   const formType = flags['form_type']?.[0] as Variant | undefined
-
   const variant: Variant = ready && formType ? formType : 'big-form'
-
   console.log('var', variant)
 
   const [stats, setStats] = useState<Stats>({
@@ -323,9 +321,9 @@ export function ResumeContact() {
       id="contact"
       className="min-h-screen w-full border-t border-slate-700 px-3 py-6 sm:px-4 sm:py-10 md:px-6 md:py-16 lg:py-20"
     >
-      <div className="form-enter animate-fadeIn mx-auto w-full max-w-2xl rounded-lg border border-blue-500/50 bg-gradient-to-br from-blue-900/40 to-purple-900/40 p-4 sm:p-6 md:p-8">
+      <div className="form-enter animate-fadeIn mx-auto w-full max-w-2xl rounded-lg border border-slate-700 bg-slate-800/80 p-4 sm:p-6 md:p-8">
         <h3 className="mb-1 text-xl font-bold text-white sm:text-2xl md:text-3xl">Свяжитесь со мной</h3>
-        <p className="mb-5 text-xs text-slate-300 sm:mb-6 sm:text-sm md:mb-8">
+        <p className="mb-5 text-xs text-slate-400 sm:mb-6 sm:text-sm md:mb-8">
           Поделитесь своей идеей, и я свяжусь с вами в течение 24 часов
         </p>
 
@@ -339,7 +337,7 @@ export function ResumeContact() {
               value={formData.email}
               onChange={handleFieldChange}
               onBlur={() => handleFieldBlur('email')}
-              className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
+              className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
             />
           </div>
 
@@ -354,13 +352,13 @@ export function ResumeContact() {
               value={formData.message}
               onChange={handleFieldChange}
               onBlur={() => handleFieldBlur('message')}
-              className="md:rows-5 w-full resize-none rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
+              className="md:rows-5 w-full resize-none rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white placeholder-slate-500 transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 focus:outline-none sm:px-4 sm:py-2.5 md:py-3"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full transform rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:scale-105 active:scale-95 sm:py-3 sm:text-base md:px-6 md:py-3"
+            className="w-full transform rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:scale-105 active:scale-95 sm:py-3 sm:text-base md:px-6 md:py-3"
           >
             Отправить
           </button>

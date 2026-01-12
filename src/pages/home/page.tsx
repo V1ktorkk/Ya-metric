@@ -1,4 +1,5 @@
 import { Layout } from '@widgets/layout'
+import { ProjectsSection } from '../../components/ProjectsSection'
 import { ResumeContact } from '../../components/ResumeContact'
 
 export function HomePage() {
@@ -6,6 +7,7 @@ export function HomePage() {
     <Layout>
       <Layout.Main>
         <ResumeContact />
+        <ProjectsSection />
       </Layout.Main>
     </Layout>
   )
