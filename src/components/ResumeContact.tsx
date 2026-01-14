@@ -322,9 +322,9 @@ export function ResumeContact() {
       className="min-h-screen w-full border-t border-slate-700 px-3 py-6 sm:px-4 sm:py-10 md:px-6 md:py-16 lg:py-20"
     >
       <div className="form-enter animate-fadeIn mx-auto w-full max-w-2xl rounded-lg border border-slate-700 bg-slate-800/80 p-4 sm:p-6 md:p-8">
-        <h3 className="mb-1 text-xl font-bold text-white sm:text-2xl md:text-3xl">Свяжитесь со мной</h3>
+        <h3 className="mb-1 text-xl font-bold text-white sm:text-2xl md:text-3xl">Начнём сотрудничество</h3>
         <p className="mb-5 text-xs text-slate-400 sm:mb-6 sm:text-sm md:mb-8">
-          Поделитесь своей идеей, и я свяжусь с вами в течение 24 часов
+          Расскажите о себе и своем проекте. Я ответу в течение 24 часов
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
